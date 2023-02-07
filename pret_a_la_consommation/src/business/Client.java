@@ -25,7 +25,18 @@ public class Client {
         prets.add(new Pret(montantDemande, dateSouscription, taux, this));
         taux.addPret(prets.get(prets.size()-1));
     }
+    public void information(){
+        System.out.println("Information du Client : ");
+        System.out.println("id : " + id);
+        System.out.println("Nom : " + nom);
+        System.out.println("Prenom : "+ prenom);
+        System.out.println("Nombre de prêts : " + prets.size());
+        System.out.println("\nInformation sur les prêt : ");
+        for(Pret pret: prets){
+            pret.information();
+        }
 
+    }
     public List<Pret> getPrets() {
         return prets;
     }

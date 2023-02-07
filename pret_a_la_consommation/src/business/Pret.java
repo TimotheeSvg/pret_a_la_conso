@@ -10,7 +10,8 @@ import java.util.List;
 import java.lang.Math;
 import java.util.Locale;
 
-public class Pret implements Comparable<Pret>{
+
+public class Pret{
 
     private final long id;
     private double montantDemande;
@@ -27,7 +28,9 @@ public class Pret implements Comparable<Pret>{
     private Client client;
 
 
-
+    public long getId() {
+        return id;
+    }
 
     public Pret(double montantDemande, LocalDateTime dateSouscription, Taux taux, Client client){
         this.client = client;
@@ -35,6 +38,7 @@ public class Pret implements Comparable<Pret>{
         this.mensualites = new ArrayList<>();
         this.montantDemande = montantDemande;
         this.dateSouscription = dateSouscription;
+
         this.id = ++compteur;
 
         calculMensualites();
@@ -42,7 +46,9 @@ public class Pret implements Comparable<Pret>{
 
     }
 
-
+    public void information(){
+        System.out.println("Pret " + id + " | Montant : " + montantDemande+ " | Taux :"+taux.toString() +" | Date Souscription : " + dateSouscription + " | Date Effet : " + dateEffet );
+    }
     public void calculMensualites(){
         double tauxInteret = taux.getValeur()/taux.getDuree().getDureeEnMois();
         double mensualite = montantDemande * tauxInteret / (1 - Math.pow(1+tauxInteret, -taux.getDuree().getDureeEnMois()));
@@ -74,15 +80,15 @@ public class Pret implements Comparable<Pret>{
         this.montantDemande = montantDemande;
     }
 
-    @Override
-    public String toString() {
-        return "id : " + id + " Montant : " + montantDemande + " souscription : " + dateSouscription + "\n\t\t"+taux + "\n\n\t\t\t Mensualiter : \n" + mensualites.toString();
-    }
-    @Override
-    public int compareTo(Pret pret) {
-        return Double.compare(getMontantDemande(), pret.getMontantDemande());
-
+    public LocalDate getDateEffet() {
+        return dateEffet;
     }
 
+    public void setDateEffet(LocalDate dateEffet) {
+        this.dateEffet = dateEffet;
+    }
 
+    public LocalDateTime getDateSouscription() {
+        return dateSouscription;
+    }
 }

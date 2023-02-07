@@ -26,6 +26,17 @@ public class Taux {
         this.prets.add(pret);
     }
 
+    public List<Pret> getPrets() {
+        return prets;
+    }
+
+    public void setPrets(List<Pret> prets) {
+        this.prets = prets;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public double getValeur() {
         return valeur;

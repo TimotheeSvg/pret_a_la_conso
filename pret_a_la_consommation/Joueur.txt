@@ -1,0 +1,101 @@
+package fr.esgi.poker.business;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Cette classe représente le concept de joueur Elle implémente l'interface
+ * Comparable pour permettre à Java de trier des joueurs sur leur pseudo
+ * 
+ * @author efiku
+ *
+ */
+public class Joueur implements Comparable<Joueur> {
+
+	private Long id;
+	private String pseudo;
+	private float solde;
+	private List<Carte> main;
+	private static final float SOLDE_INITIAL = 50;
+	// 0L -> Autoboxing
+	private static Long compteur = 0L;
+
+	// Constructeur par d�faut (en anglais default constructor)
+	// Constructeur sans param�tre
+	public Joueur() {
+		solde = SOLDE_INITIAL;
+		main = new ArrayList<>();
+		// D'abord on incr�ment puis on affecte
+		id = ++compteur;
+	}
+
+	public Joueur(String pseudo) {
+		// DRY : Don't Repeat Yourself
+		// On invoque le constructeur par d�faut
+		this();
+		this.pseudo = pseudo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public float getSolde() {
+		return solde;
+	}
+
+	public void setSolde(float solde) {
+		this.solde = solde;
+	}
+
+	public List<Carte> getMain() {
+		return main;
+	}
+
+	public void setMain(List<Carte> main) {
+		this.main = main;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, main, pseudo, solde);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Joueur other = (Joueur) obj;
+		return Objects.equals(id, other.id) && Objects.equals(main, other.main) && Objects.equals(pseudo, other.pseudo)
+				&& Float.floatToIntBits(solde) == Float.floatToIntBits(other.solde);
+	}
+
+	@Override
+	public int compareTo(Joueur autreJoueur) {
+		return this.pseudo.compareTo(autreJoueur.getPseudo());
+	}
+
+	@Override
+	public String toString() {
+		return "Joueur [id=" + id + ", pseudo=" + pseudo + ", solde=" + solde + ", main=" + main + "]";
+	}
+
+}

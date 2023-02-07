@@ -1,0 +1,84 @@
+package fr.esgi.poker.business;
+
+import java.util.Objects;
+
+public class Carte {
+
+	// Attributs
+	private String nom;
+	private int valeur; // 2 pour le 2, 11 pour Valet, 12 pour Dame, 13 pour Roi et 14 pour l'As
+	private Couleur couleur;
+
+	// Constructeur
+	public Carte(int valeur, Couleur couleur) {
+		super();
+		this.valeur = valeur;
+		this.couleur = couleur;
+		// Le nom d�pend de la valeur
+		switch (valeur) {
+		case 11:
+			nom = "Valet";
+			break;
+		case 12:
+			nom = "Dame";
+			break;
+		case 13:
+			nom = "Roi";
+			break;
+		case 14:
+			nom = "As";
+			break;
+		default:
+			// On convertit la valeur de la carte en String
+			nom = String.valueOf(valeur);
+			break;
+		}
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public int getValeur() {
+		return valeur;
+	}
+
+	public void setValeur(int valeur) {
+		this.valeur = valeur;
+	}
+
+	public Couleur getCouleur() {
+		return couleur;
+	}
+
+	public void setCouleur(Couleur couleur) {
+		this.couleur = couleur;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(couleur, nom, valeur);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Carte other = (Carte) obj;
+		return Objects.equals(couleur, other.couleur) && Objects.equals(nom, other.nom) && valeur == other.valeur;
+	}
+
+	@Override
+	public String toString() {
+		return nom + " de " + couleur.getNom();
+	}
+
+}
