@@ -17,5 +17,6 @@ public interface PretService {
     List<Pret> trierPretMontantDeCroissant();
     List<Pret> trierPretDateEffettCroissant();
     List<Pret> trierPretDateEffetDeCroissant();
+    public void calculMensualites(Pret pret);
     List<Pret> trierPretEntreDeuxDates(LocalDateTime start, LocalDateTime end);
 }

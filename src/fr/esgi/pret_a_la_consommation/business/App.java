@@ -10,27 +10,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class App {
-
     private static final DureeService dureeService = new DureeServiceImpl();
     private static final MotifService motifService = new MotifServiceImpl();
     private static final TauxService tauxService = new TauxServiceImpl();
     private static final ClientService clientService = new ClientServiceImpl();
     private static final PretService pretService = new PretServiceImpl();
-
     private static int step = 0;
     private static int responseMenuPrincipal = 0;
     private static int sortingChoice = 0;
     private static int creatingChoice = 0;
     private static int informationChoice = 0;
 
-
     private static Long idUser;
     private static Long idTaux;
     private static List<Pret> sortingListPret;
     private static Scanner scanner;
-
     private static int montant;
-
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -80,7 +75,6 @@ public class App {
 
 
     public static void processing() throws InterruptedException {
-
         switch (step) {
             case 0:
                 System.out.println("Bienvenue sur prêt à la consometion \n");
@@ -89,9 +83,11 @@ public class App {
                         "Information Pret",
                         "Menu Ajout",
                         "Toute informations"), "Faites votre choix");
+
                 if(responseMenuPrincipal >= 0) {
                     step = 1;
                 }
+
                 processing();
                 break;
 
@@ -103,8 +99,8 @@ public class App {
                         if (idUser >= 0) {
                             step = 2;
                         }
-                        processing();
 
+                        processing();
                         break;
                     case 2:
                         System.out.println("Choisir l'utilisateur :");
@@ -112,6 +108,7 @@ public class App {
                         if(idUser >=0){
                             step = 2;
                         }
+
                         processing();
                         break;
                     case 3:
@@ -121,12 +118,14 @@ public class App {
                                 "Voir les prêts trier par date (Le plus récent au plus ancient)",
                                 "Voir les prêts entre deux date",
                                 "Voir les prêts"), "choisir un tri");
+
                         if(sortingChoice >0){
                             step = 2;
                         }
 
                         processing();
                         break;
+
                     case 4:
                         creatingChoice = getResponseMenu(Arrays.asList("Ajout d'un Client","Ajout d'un Taux", "Ajout d'une durée", "Ajout d'un motif"), "Choisir votre ajout");
                         if(creatingChoice >= 0){
@@ -135,6 +134,7 @@ public class App {
 
                         processing();
                         break;
+
                     case 5:
                         informationChoice = getResponseMenu(Arrays.asList("Tout les motifs", "Toutes les durées", "Tout les taux"), "Faites votre choix");
                         if(informationChoice >= 0){
@@ -144,6 +144,7 @@ public class App {
                         break;
                 }
                 break;
+
             case 2:
                 switch (responseMenuPrincipal) {
                     case 1:
@@ -237,36 +238,35 @@ public class App {
                         }
 
                     case 5:
-                        int supp = 0;
                         switch (informationChoice){
                             case 1:
                                 for(Motif motif: motifService.recupererMotifs()){
                                     System.out.println(motif);
                                 }
-                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
+                                getResponseMenu(Arrays.asList(),"Faites Votre choix");
                                 processing();
                                 break;
                             case 2:
                                 for(Duree duree: dureeService.recupererDurees()){
                                     System.out.println(duree);
                                 }
-                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
+                                getResponseMenu(Arrays.asList(),"Faites Votre choix");
                                 processing();
                                 break;
                             case 3:
                                 for(Taux taux: tauxService.recupererTauxs()){
                                     System.out.println(taux);
                                 }
-                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
+                                getResponseMenu(Arrays.asList(),"Faites Votre choix");
                                 processing();
                                 break;
                         }
                 }
                 break;
+
             case 3:
                 switch (responseMenuPrincipal) {
                     case 1:
-
                         idTaux = menuGetIdTaux();
                         if(idTaux >= 0){
                             step+=1;
@@ -275,13 +275,18 @@ public class App {
                         break;
 
                     case 3:
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         for(Pret pret: sortingListPret){
-                            System.out.println(pret.getMontantDemande() + " " + pret.getDateEffet());
+                            String dateEffetStr = pret.getDateEffet().format(formatter);
+
+                            System.out.println("id: " + pret.getId() + " | Client : " + pret.getClient().getNom() + " " + pret.getClient().getPrenom() + " | Montant: " + pret.getMontantDemande() +
+                                    " | Taux: " + pret.getTaux().getValeur() * 100 + " | Duree: " + pret.getTaux().getDuree().getDureeEnMois()+ " | Mensualite: " + Math.round(pret.getMontantMensualite() * 10)/10+
+                                    " | Souscription :  " + pret.getDateSouscription() + " | Effet: " + dateEffetStr + " | Motif: " + pret.getTaux().getMotif().getNom()
+                            );
                         }
                         getResponseString("Choisir : ");
                         processing();
                         break;
-
                 }
                 break;
             case 4:
@@ -430,23 +435,28 @@ public class App {
         LocalDateTime date = null;
         boolean valid = false;
         while (!valid) {
-            try {
-                String dateString = getResponseString("Veuillez saisir la date au format MM/yyyy");
-                if (dateString == null){
-                    return null;
-                }else {
-                    String[] dateStringSplit = dateString.split("/");
-                    if (dateStringSplit.length == 2) {
-                        int month = Integer.parseInt(dateStringSplit[0]);
-                        int year = Integer.parseInt(dateStringSplit[1]);
+            String dateString = getResponseString("Veuillez saisir la date au format JJ/MM/yyyy");
+            if (dateString == null){
+                return null;
+            }else {
+                String[] dateStringSplit = dateString.split("/");
+                if (dateStringSplit.length == 3) {
+                    int day = Integer.parseInt(dateStringSplit[0]);
+                    int month = Integer.parseInt(dateStringSplit[1]);
+                    int year = Integer.parseInt(dateStringSplit[2]);
 
-                        if ((0 < month && month < 13) && (2022 < year)) {
-                            date = LocalDate.of(year, month, 1).atStartOfDay();
+                    try{
+                        date = LocalDate.of(year, month, day).atStartOfDay();
+
+                        if (date.isBefore(LocalDateTime.now())) {
+                            System.out.println("La date saisie est inférieure à la date actuelle.");
+                        }else{
                             valid = true;
                         }
+                    }catch (Exception ignored){
                     }
                 }
-            } catch (Exception ignored) {}
+            }
         }
         return date;
     }

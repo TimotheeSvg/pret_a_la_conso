@@ -56,6 +56,6 @@ public class Mensualite {
 
     @Override
     public String toString() {
-        return "datePrelevement : " + datePrelevement + " | partInteretsRembourses: " + partInteretsRembourses + " | partCapitalRembourse: " + partCapitalRembourse;
+        return "date prelevement: " + datePrelevement + " | Interets Rembourses: " + partInteretsRembourses + " | Capital Rembourse: " + partCapitalRembourse;
     }
 }

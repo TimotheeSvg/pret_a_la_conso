@@ -3,6 +3,7 @@ package fr.esgi.pret_a_la_consommation.business.business;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Pret {
 
     private final Long id;
     private double montantDemande;
+    private double montantMensualite;
 
     //Date actuel a la creation
     private final LocalDate dateSouscription;
@@ -98,8 +100,19 @@ public class Pret {
         this.client = client;
     }
 
+    public double getMontantMensualite() {
+        return montantMensualite;
+    }
+
+    public void setMontantMensualite(double montantMensualite) {
+        this.montantMensualite = montantMensualite;
+    }
+
     @Override
     public String toString() {
-        return  id + " montantDemande " + montantDemande + ", dateSouscription " + dateSouscription + " dateEffet:" + dateEffet + ", taux:" + taux;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String dateEffetStr = dateEffet.format(formatter);
+        return  "id: "+id + " | Montant du prêt: " + montantDemande + " | Montant mensualite: "+ Math.round(montantMensualite * 10.0) / 10.0 + " | Date souscription: "+ dateSouscription+
+                " | Taux : " + taux.getValeur() * 100 + "% | Duree: " + taux.getDuree().getDureeEnMois() + " mois | Motif: " + taux.getMotif().getNom();
     }
 }

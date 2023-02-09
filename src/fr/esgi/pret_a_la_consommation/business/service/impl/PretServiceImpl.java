@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 public class PretServiceImpl implements PretService {
     private static List<Pret> prets = new ArrayList<>();
-    private static List<Mensualite> mensualite = new ArrayList<>();
     private static ClientService clientService = new ClientServiceImpl();
 
     @Override
@@ -42,18 +41,25 @@ public class PretServiceImpl implements PretService {
         return pret;
     }
 
+    @Override
     public void calculMensualites(Pret pret) {
         double tauxInteret = pret.getTaux().getValeur() / (double)pret.getTaux().getDuree().getDureeEnMois();
         double mensualiteVal = pret.getMontantDemande() * tauxInteret / (1.0 - Math.pow(1.0 + tauxInteret, (double)(-pret.getTaux().getDuree().getDureeEnMois())));
+        pret.setMontantMensualite(mensualiteVal);
+
         DecimalFormat df = new DecimalFormat("#.##");
         double montantRembourser = 0.0;
 
         for(int i = 1; i <= pret.getTaux().getDuree().getDureeEnMois(); ++i) {
-            LocalDate datePrelevement = pret.getDateEffet().plusMonths((long)(i - 1)).toLocalDate();
+            LocalDate datePrelevement = pret.getDateEffet().plusMonths((long)(i)).toLocalDate();
             double interet = (pret.getMontantDemande() - montantRembourser) * tauxInteret;
             double amorti = mensualiteVal - interet;
             montantRembourser += amorti;
-            mensualite.add(new Mensualite(datePrelevement, Double.parseDouble(df.format(montantRembourser).replace(",", ".")), Double.parseDouble(df.format(interet).replace(",", ".")), pret));
+            Mensualite mensualite = new Mensualite(datePrelevement, Double.parseDouble(df.format(montantRembourser).replace(",", ".")), Double.parseDouble(df.format(interet).replace(",", ".")), pret);
+            List<Mensualite> listMensualitePret = pret.getMensualites();
+            listMensualitePret.add(mensualite);
+            pret.setMensualites(listMensualitePret);
+
         }
 
     }
@@ -91,7 +97,6 @@ public class PretServiceImpl implements PretService {
             System.out.println("\t"+i + " - " + mensualite);
             i++;
         }
-
     }
 
     @Override
