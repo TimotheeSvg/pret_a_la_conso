@@ -32,17 +32,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public boolean supprimerClient(Long id) {
-        Client client = recupererClient(id);
-        if (client==null) {
-            return false;
-        }
-        else {
-            return clients.remove(client);
-        }
-    }
-
-    @Override
     public boolean ajouterPret(Pret pret, Long id) {
         Client client = recupererClient(id);
 
@@ -56,8 +45,4 @@ public class ClientServiceImpl implements ClientService {
         return true;
     }
 
-    @Override
-    public void trierClient() {
-
-    }
 }

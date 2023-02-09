@@ -12,7 +12,6 @@ public interface PretService {
     List<Pret> recupererPrets();
     Pret recupererPret(Long id);
     void afficherPretMensualite(Long id);
-    boolean supprimerPret(Long id);
     List<Pret> trierPretMontantCroissant();
     List<Pret> trierPretMontantDeCroissant();
     List<Pret> trierPretDateEffettCroissant();

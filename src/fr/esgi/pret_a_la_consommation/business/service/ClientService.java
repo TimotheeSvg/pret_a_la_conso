@@ -9,10 +9,8 @@ public interface ClientService {
     Client ajouterClient(String nom, String prenom);
     List<Client> recupererClients();
     Client recupererClient(Long id);
-    boolean supprimerClient(Long id);
 
     boolean ajouterPret(Pret pret, Long id);
-    void trierClient();
 
 }
 

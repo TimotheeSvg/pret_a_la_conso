@@ -10,7 +10,6 @@ public class Client {
     private String nom;
     private String prenom;
     private static Long compteur = 0L;
-
     private List<Pret> prets;
 
     public Client(String nom, String prenom){

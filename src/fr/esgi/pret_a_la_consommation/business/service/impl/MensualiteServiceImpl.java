@@ -32,19 +32,4 @@ public class MensualiteServiceImpl implements MensualiteService {
         }
         return null;
     }
-
-    @Override
-    public boolean supprimerMensualite(Long id) {
-        Mensualite mensualite = recupererMensualite(id);
-        if(mensualite == null){
-            return false;
-        }else{
-            return mensualites.remove(mensualite);
-        }
-    }
-
-    @Override
-    public void trierMensualite() {
-
-    }
 }

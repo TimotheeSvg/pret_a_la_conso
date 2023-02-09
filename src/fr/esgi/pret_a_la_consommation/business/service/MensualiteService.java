@@ -10,7 +10,5 @@ public interface MensualiteService {
     Mensualite ajouterMensualite(LocalDate datePrelevement, double partCapitalRembourse, double partInteretsRembourses, Pret pret);
     List<Mensualite> recupererMensualites();
     Mensualite recupererMensualite(Long id);
-    boolean supprimerMensualite(Long id);
-    void trierMensualite();
 
 }

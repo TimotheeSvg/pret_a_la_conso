@@ -2,6 +2,7 @@ package fr.esgi.pret_a_la_consommation.business.service.impl;
 
 import fr.esgi.pret_a_la_consommation.business.business.Duree;
 import fr.esgi.pret_a_la_consommation.business.business.Motif;
+import fr.esgi.pret_a_la_consommation.business.business.Taux;
 import fr.esgi.pret_a_la_consommation.business.service.MotifService;
 
 import java.util.ArrayList;
@@ -30,19 +31,16 @@ public class MotifServiceImpl implements MotifService {
         }
         return null;
     }
-
     @Override
-    public boolean supprimerMotif(Long id) {
+    public boolean ajouterTaux(Taux taux, Long id){
         Motif motif = recupererMotif(id);
-        if(motif==null){
+        if(motif == null){
             return false;
-        }else{
-            return motifs.remove(motif);
         }
+        List<Taux> listTauxMotif = motif.getTaux();
+        listTauxMotif.add(taux);
+        motif.setTaux(listTauxMotif);
+        return true;
     }
 
-    @Override
-    public void trierMotif() {
-
-    }
 }

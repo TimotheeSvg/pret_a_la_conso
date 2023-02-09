@@ -6,6 +6,7 @@ import fr.esgi.pret_a_la_consommation.business.business.Pret;
 import fr.esgi.pret_a_la_consommation.business.business.Taux;
 import fr.esgi.pret_a_la_consommation.business.service.PretService;
 import fr.esgi.pret_a_la_consommation.business.service.ClientService;
+import fr.esgi.pret_a_la_consommation.business.service.TauxService;
 import fr.esgi.pret_a_la_consommation.business.util.ComparateurPretSurDateEffetCroissant;
 import fr.esgi.pret_a_la_consommation.business.util.ComparateurPretSurMontantCroissant;
 
@@ -30,12 +31,14 @@ import java.util.stream.Collectors;
 public class PretServiceImpl implements PretService {
     private static List<Pret> prets = new ArrayList<>();
     private static ClientService clientService = new ClientServiceImpl();
+    private static TauxService tauxService = new TauxServiceImpl();
 
     @Override
     public Pret ajouterPret(double montantDemande, LocalDateTime dateEffet, Taux taux, Client client) {
         Pret pret = new Pret(montantDemande, dateEffet, taux, client);
         calculMensualites(pret);
         clientService.ajouterPret(pret, client.getId());
+        tauxService.ajouterPret(pret, taux.getId());
         prets.add(pret);
         afficherPretMensualite(pret.getId());
         return pret;
@@ -46,7 +49,7 @@ public class PretServiceImpl implements PretService {
         double tauxInteret = pret.getTaux().getValeur() / (double)pret.getTaux().getDuree().getDureeEnMois();
         double mensualiteVal = pret.getMontantDemande() * tauxInteret / (1.0 - Math.pow(1.0 + tauxInteret, (double)(-pret.getTaux().getDuree().getDureeEnMois())));
         pret.setMontantMensualite(mensualiteVal);
-
+        List<Mensualite> listMensualitePret = new ArrayList<>();
         DecimalFormat df = new DecimalFormat("#.##");
         double montantRembourser = 0.0;
 
@@ -56,12 +59,10 @@ public class PretServiceImpl implements PretService {
             double amorti = mensualiteVal - interet;
             montantRembourser += amorti;
             Mensualite mensualite = new Mensualite(datePrelevement, Double.parseDouble(df.format(montantRembourser).replace(",", ".")), Double.parseDouble(df.format(interet).replace(",", ".")), pret);
-            List<Mensualite> listMensualitePret = pret.getMensualites();
+
             listMensualitePret.add(mensualite);
-            pret.setMensualites(listMensualitePret);
-
         }
-
+        pret.setMensualites(listMensualitePret);
     }
     @Override
     public List<Pret> recupererPrets() {
@@ -76,16 +77,6 @@ public class PretServiceImpl implements PretService {
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean supprimerPret(Long id) {
-        Pret pret = recupererPret(id);
-        if(pret == null){
-            return false;
-        }else{
-            return prets.remove(pret);
-        }
     }
 
     @Override

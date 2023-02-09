@@ -7,7 +7,6 @@ public class Duree {
     private final Long id;
     private int dureeEnMois;
     private static Long compteur = 0L;
-
     private List<Taux> taux;
 
     public Duree(int dureeEnMois){
