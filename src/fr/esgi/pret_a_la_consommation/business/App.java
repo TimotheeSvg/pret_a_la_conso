@@ -77,6 +77,7 @@ public class App {
 
     public static void processing() throws InterruptedException {
         switch (step) {
+            //Step 0 Menu Principal
             case 0:
                 System.out.println("Bienvenue sur prêt à la consometion \n");
                 responseMenuPrincipal = getResponseMenu(Arrays.asList("Ajouter un Pret",
@@ -94,6 +95,7 @@ public class App {
 
             case 1:
                 switch (responseMenuPrincipal) {
+                    //Step 1, Ajout : Selection utilisateur
                     case 1:
                         System.out.println("Choisir l'utilisateur :");
                         idUser = menuGetIdUser();
@@ -103,6 +105,7 @@ public class App {
 
                         processing();
                         break;
+                    //Step 1, Ajout : Selection utilisateur
                     case 2:
                         System.out.println("Choisir l'utilisateur :");
                         idUser = menuGetIdUser();
@@ -112,7 +115,10 @@ public class App {
 
                         processing();
                         break;
+
+                    //Step 1, Information pret : Selection tri
                     case 3:
+
                         sortingChoice = getResponseMenu(Arrays.asList("Voir les prêts trier par montant (Plus haut au plus Bas)",
                                 "Voir les prêts trier par montant (Plus bas au plus haut)",
                                 "Voir les prêts trier par Date (Le plus ancien au plus récent)" ,
@@ -127,7 +133,9 @@ public class App {
                         processing();
                         break;
 
+                    //Step 1, Voir Tout les Ajout : Selection Ajout
                     case 4:
+
                         creatingChoice = getResponseMenu(Arrays.asList("Ajout d'un Client","Ajout d'un Taux", "Ajout d'une durée", "Ajout d'un motif"), "Choisir votre ajout");
                         if(creatingChoice >= 0){
                             step +=1;
@@ -136,7 +144,9 @@ public class App {
                         processing();
                         break;
 
+                    //Step 1, Info : Selection Info
                     case 5:
+
                         informationChoice = getResponseMenu(Arrays.asList("Tout les motifs", "Toutes les durées", "Tout les taux"), "Faites votre choix");
                         if(informationChoice >= 0){
                             step +=1;
@@ -148,6 +158,7 @@ public class App {
 
             case 2:
                 switch (responseMenuPrincipal) {
+                //Step 2, Ajout : Selection du montant
                     case 1:
                         montant = getResponseInt("Veuillez saisir le montant demandé ");
                         if (montant > 0) {
@@ -156,6 +167,7 @@ public class App {
                         processing();
                         break;
 
+                    //Step 2, Information Client : Affichange client + liste de pret
                     case 2:
                         Client client = clientService.recupererClient(idUser);
                         List<Pret> prets = client.getPrets();
@@ -171,7 +183,9 @@ public class App {
                         processing();
                         break;
 
+                    //Step 2, Tri : Partit de tri
                     case 3:
+
                         switch (sortingChoice) {
                             case 1:
                                 sortingListPret = pretService.trierPretMontantCroissant();
@@ -209,15 +223,20 @@ public class App {
                                 break;
                         }
                         break;
+
+                    //Ajout Autre : processus de chaque ajout
                     case 4:
                         switch (creatingChoice){
                             case 1:
+                                //Ajout Client
                                 String nom = getResponseString("Entrer le nom : ");
                                 String prenom = getResponseString("Entrer le prenom : ");
                                 clientService.ajouterClient(nom,prenom);
                                 step =1;
                                 processing();
                                 break;
+
+                            //Ajout Taux
                             case 2:
                                 double val = getResponseInt("Entrer le % : (de 0 à 100)");
                                 if(val <= 100 && val >= 0) {
@@ -232,12 +251,16 @@ public class App {
                                 }
                                 processing();
                                 break;
+
+                            //Ajout Duree
                             case 3:
                                 int temp = getResponseInt("Entrer la durée en mois : ");
                                 dureeService.ajouterDuree(temp);
                                 step = 1;
                                 processing();
                                 break;
+
+                            //Ajout Motif
                             case 4:
                                 String nomMotif = getResponseString("Entrer le nouveaux motif : ");
                                 String desc = getResponseString("Entrer la description du motif : ");
@@ -247,6 +270,7 @@ public class App {
                                 break;
                         }
 
+                    //step 2 Toute Information : Affichage information demander
                     case 5:
                         switch (informationChoice){
                             case 1:
@@ -274,8 +298,10 @@ public class App {
                 }
                 break;
 
+            //step 3
             case 3:
                 switch (responseMenuPrincipal) {
+                    //Creation Pret choix taux
                     case 1:
                         idTaux = menuGetIdTaux();
                         if(idTaux >= 0){
@@ -283,6 +309,8 @@ public class App {
                         }
                         processing();
                         break;
+
+                    //Information client -> pret -> affichage avec mensualite
                     case 2:
                         Pret pretMens = pretService.recupererPret(idPret);
                         List<Mensualite> mensualites = pretMens.getMensualites();
@@ -293,6 +321,8 @@ public class App {
                         getResponseMenu(Arrays.asList(),"Faites votre choix");
                         processing();
                         break;
+
+                    //Affichage pret trier
                     case 3:
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         for(Pret pret: sortingListPret){
@@ -308,8 +338,10 @@ public class App {
                         break;
                 }
                 break;
+            //step 4
             case 4:
                 switch (responseMenuPrincipal){
+                    //Ajout du pret etape finale
                     case 1:
                         LocalDateTime dateEffet = getDate();
 
