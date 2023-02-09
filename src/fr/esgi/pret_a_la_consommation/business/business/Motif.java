@@ -57,6 +57,6 @@ public class Motif {
 
     @Override
     public String toString() {
-        return "id " + id + " nom='" + nom ;
+        return "id " + id + " | nom : " + nom  + " | description : " + description;
     }
 }

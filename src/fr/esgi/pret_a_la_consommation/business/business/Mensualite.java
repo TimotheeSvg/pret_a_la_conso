@@ -17,7 +17,7 @@ public class Mensualite {
         this.pret = pret;
         this.id = ++compteur;
         this.datePrelevement = datePrelevement;
-        this.partCapitalRembourse =partCapitalRembourse;
+        this.partCapitalRembourse = partCapitalRembourse;
         this.partInteretsRembourses = partInteretsRembourses;
 
     }
@@ -56,11 +56,6 @@ public class Mensualite {
 
     @Override
     public String toString() {
-        return "Mensualite{" +
-                "id=" + id +
-                ", datePrelevement=" + datePrelevement +
-                ", partInteretsRembourses=" + partInteretsRembourses +
-                ", partCapitalRembourse=" + partCapitalRembourse +
-                '}';
+        return "datePrelevement : " + datePrelevement + " | partInteretsRembourses: " + partInteretsRembourses + " | partCapitalRembourse: " + partCapitalRembourse;
     }
 }

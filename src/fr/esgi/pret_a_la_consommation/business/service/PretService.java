@@ -11,9 +11,11 @@ public interface PretService {
     Pret ajouterPret(double montantDemande, LocalDateTime dateSouscription, Taux taux, Client client);
     List<Pret> recupererPrets();
     Pret recupererPret(Long id);
+    void afficherPretMensualite(Long id);
     boolean supprimerPret(Long id);
-    void trierPretMontantCroissant();
-    void trierPretMontantDeCroissant();
-    void trierPretDateEffettCroissant();
-    void trierPretDateEffetDeCroissant();
+    List<Pret> trierPretMontantCroissant();
+    List<Pret> trierPretMontantDeCroissant();
+    List<Pret> trierPretDateEffettCroissant();
+    List<Pret> trierPretDateEffetDeCroissant();
+    List<Pret> trierPretEntreDeuxDates(LocalDateTime start, LocalDateTime end);
 }

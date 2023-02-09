@@ -1,5 +1,6 @@
 package fr.esgi.pret_a_la_consommation.business.business;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class Pret {
         this.dateSouscription = LocalDate.now();
         this.id = ++compteur;
 
-//        calculMensualites();
 
     }
 
@@ -100,6 +100,6 @@ public class Pret {
 
     @Override
     public String toString() {
-        return  id + " montantDemande " + montantDemande + ", dateSouscription " + dateSouscription + " dateEffet=" + dateEffet + ", taux=" + taux;
+        return  id + " montantDemande " + montantDemande + ", dateSouscription " + dateSouscription + " dateEffet:" + dateEffet + ", taux:" + taux;
     }
 }

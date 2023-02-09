@@ -1,9 +1,6 @@
 package fr.esgi.pret_a_la_consommation.business.util;
-
 import fr.esgi.pret_a_la_consommation.business.business.Pret;
-
 import java.util.Comparator;
-
 public class ComparateurPretSurDateEffetCroissant implements Comparator<Pret> {
 
     @Override

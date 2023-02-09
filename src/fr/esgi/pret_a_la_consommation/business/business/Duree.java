@@ -46,6 +46,6 @@ public class Duree {
 
     @Override
     public String toString() {
-        return "id : " + id + " duree "+dureeEnMois;
+        return "id : " + id + " | duree "+dureeEnMois;
     }
 }

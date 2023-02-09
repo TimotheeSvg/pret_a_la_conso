@@ -68,6 +68,6 @@ public class Taux {
 
     @Override
     public String toString() {
-        return id + " valeur " + valeur + " duree " + duree + " motif=" + motif;
+        return "id " + id + " | valeur " + valeur * 100 + " | duree " + duree.getDureeEnMois() + " | motif :" + motif.getNom();
     }
 }

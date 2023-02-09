@@ -1,7 +1,5 @@
 package fr.esgi.pret_a_la_consommation.business;
-import fr.esgi.pret_a_la_consommation.business.business.Client;
-import fr.esgi.pret_a_la_consommation.business.business.Pret;
-import fr.esgi.pret_a_la_consommation.business.business.Taux;
+import fr.esgi.pret_a_la_consommation.business.business.*;
 import fr.esgi.pret_a_la_consommation.business.service.*;
 import fr.esgi.pret_a_la_consommation.business.service.impl.*;
 
@@ -22,9 +20,13 @@ public class App {
     private static int step = 0;
     private static int responseMenuPrincipal = 0;
     private static int sortingChoice = 0;
+    private static int creatingChoice = 0;
+    private static int informationChoice = 0;
+
 
     private static Long idUser;
     private static Long idTaux;
+    private static List<Pret> sortingListPret;
     private static Scanner scanner;
 
     private static int montant;
@@ -85,14 +87,18 @@ public class App {
                 responseMenuPrincipal = getResponseMenu(Arrays.asList("Ajouter un Pret",
                         "Information Client",
                         "Information Pret",
-                        "Information Taux"));
-                step = 1;
+                        "Menu Ajout",
+                        "Toute informations"), "Faites votre choix");
+                if(responseMenuPrincipal >= 0) {
+                    step = 1;
+                }
                 processing();
                 break;
 
             case 1:
                 switch (responseMenuPrincipal) {
                     case 1:
+                        System.out.println("Choisir l'utilisateur :");
                         idUser = menuGetIdUser();
                         if (idUser >= 0) {
                             step = 2;
@@ -101,6 +107,7 @@ public class App {
 
                         break;
                     case 2:
+                        System.out.println("Choisir l'utilisateur :");
                         idUser = menuGetIdUser();
                         if(idUser >=0){
                             step = 2;
@@ -113,28 +120,35 @@ public class App {
                                 "Voir les prêts trier par Date (Le plus ancien au plus récent)" ,
                                 "Voir les prêts trier par date (Le plus récent au plus ancient)",
                                 "Voir les prêts entre deux date",
-                                "Voir les prêts"));
+                                "Voir les prêts"), "choisir un tri");
                         if(sortingChoice >0){
                             step = 2;
                         }
 
                         processing();
                         break;
-//                    case 4:
-////                        for(Taux taux: Ltaux){
-////                            System.out.println("Taux " + taux.getId() + " | " + taux + " |  Nombre de prêt accorder a ce taux : " + taux.getPrets().size());
-////                        }
-////                        getResponseMenu(Arrays.asList());
-//                        processing();
-//                        break;
-//
+                    case 4:
+                        creatingChoice = getResponseMenu(Arrays.asList("Ajout d'un Client","Ajout d'un Taux", "Ajout d'une durée", "Ajout d'un motif"), "Choisir votre ajout");
+                        if(creatingChoice >= 0){
+                            step +=1;
+                        }
+
+                        processing();
+                        break;
+                    case 5:
+                        informationChoice = getResponseMenu(Arrays.asList("Tout les motifs", "Toutes les durées", "Tout les taux"), "Faites votre choix");
+                        if(informationChoice >= 0){
+                            step +=1;
+                        }
+                        processing();
+                        break;
                 }
                 break;
             case 2:
-                switch (responseMenuPrincipal){
+                switch (responseMenuPrincipal) {
                     case 1:
                         montant = getResponseInt("Veuillez saisir le montant demandé ");
-                        if(montant > 0) {
+                        if (montant > 0) {
                             step = 3;
                         }
                         processing();
@@ -147,49 +161,103 @@ public class App {
                         break;
 
                     case 3:
-                        switch (sortingChoice){
+                        switch (sortingChoice) {
                             case 1:
-                                pretService.trierPretMontantCroissant();
+                                sortingListPret = pretService.trierPretMontantCroissant();
                                 step = 3;
                                 processing();
                                 break;
                             case 2:
-                                pretService.trierPretMontantDeCroissant();
+                                sortingListPret = pretService.trierPretMontantDeCroissant();
                                 step = 3;
                                 processing();
                                 break;
                             case 3:
-                                pretService.trierPretDateEffettCroissant();
+                                sortingListPret = pretService.trierPretDateEffettCroissant();
                                 step = 3;
                                 processing();
                                 break;
                             case 4:
-                                pretService.trierPretDateEffetDeCroissant();
+                                sortingListPret = pretService.trierPretDateEffetDeCroissant();
                                 step = 3;
                                 processing();
                                 break;
                             case 5:
                                 scanner = new Scanner(System.in);
-                                try{
-                                    System.out.print("Entrez une date de début au format MM/YYYY : ");
-                                    String dateStr = scanner.nextLine();
-                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
-                                    LocalDateTime dateStart = LocalDateTime.parse(dateStr, formatter);
-
-                                    System.out.print("Entrez une date de fin au format MM/YYYY : ");
-                                    dateStr = scanner.nextLine();
-                                    LocalDateTime dateEnd = LocalDateTime.parse(dateStr, formatter);
-                                    System.out.println("La date entrée est : " + dateStart + " et la fin : "+ dateEnd);
-
-                                }
-                                catch(DateTimeException e){
-                                    System.out.println(e);
-                                    System.out.println("Mauvaise Saisie");
-                                    processing();
-                                }
+                                System.out.println("Veuillez saisir la première date");
+                                LocalDateTime dateStart = getDate();
+                                System.out.println("Veuillez saisir la dernière date");
+                                LocalDateTime dateEnd = getDate();
+                                sortingListPret = pretService.trierPretEntreDeuxDates(dateStart,dateEnd);
+                                step=3;
+                                processing();
                                 break;
                             case 6:
                                 step = 3;
+                                processing();
+                                break;
+                        }
+                        break;
+                    case 4:
+                        switch (creatingChoice){
+                            case 1:
+                                String nom = getResponseString("Entrer le nom : ");
+                                String prenom = getResponseString("Entrer le prenom : ");
+                                clientService.ajouterClient(nom,prenom);
+                                step =1;
+                                processing();
+                                break;
+                            case 2:
+                                double val = getResponseInt("Entrer le % : (de 0 à 100)");
+                                if(val <= 100 && val >= 0) {
+                                    Long idDuree = menuGetIdDuree();
+                                    if (idDuree>=0){
+                                        Long idMotif = menuGetMotif();
+                                        if(idMotif >=0){
+                                            tauxService.ajouterTaux(dureeService.recupererDuree(idDuree),motifService.recupererMotif(idMotif), val);
+                                            step = 1;
+                                        }
+                                    }
+                                }
+                                processing();
+                                break;
+                            case 3:
+                                int temp = getResponseInt("Entrer la durée en mois : ");
+                                dureeService.ajouterDuree(temp);
+                                step = 1;
+                                processing();
+                                break;
+                            case 4:
+                                String nomMotif = getResponseString("Entrer le nouveaux motif : ");
+                                String desc = getResponseString("Entrer la description du motif : ");
+                                motifService.ajouterMotif(nomMotif,desc);
+                                step = 1;
+                                processing();
+                                break;
+                        }
+
+                    case 5:
+                        int supp = 0;
+                        switch (informationChoice){
+                            case 1:
+                                for(Motif motif: motifService.recupererMotifs()){
+                                    System.out.println(motif);
+                                }
+                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
+                                processing();
+                                break;
+                            case 2:
+                                for(Duree duree: dureeService.recupererDurees()){
+                                    System.out.println(duree);
+                                }
+                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
+                                processing();
+                                break;
+                            case 3:
+                                for(Taux taux: tauxService.recupererTauxs()){
+                                    System.out.println(taux);
+                                }
+                                supp = getResponseMenu(Arrays.asList(),"Faites Votre choix");
                                 processing();
                                 break;
                         }
@@ -200,11 +268,14 @@ public class App {
                     case 1:
 
                         idTaux = menuGetIdTaux();
+                        if(idTaux >= 0){
+                            step+=1;
+                        }
                         processing();
                         break;
 
                     case 3:
-                        for(Pret pret: pretService.recupererPrets()){
+                        for(Pret pret: sortingListPret){
                             System.out.println(pret.getMontantDemande() + " " + pret.getDateEffet());
                         }
                         getResponseString("Choisir : ");
@@ -216,7 +287,8 @@ public class App {
             case 4:
                 switch (responseMenuPrincipal){
                     case 1:
-                        LocalDateTime dateEffet = getDateEffet();
+                        LocalDateTime dateEffet = getDate();
+
                         if (dateEffet != null){
                             pretService.ajouterPret(montant, dateEffet,tauxService.recupererTaux(idTaux), clientService.recupererClient(idUser));
                             System.out.println("Ajout effectuer");
@@ -226,15 +298,16 @@ public class App {
                         processing();
                         break;
                 }
-                    default:
-                        step = 0;
-                        System.out.println("Erreur retour au menu principal : ");
-                        Thread.sleep(2000);
-                }
+        default:
+            step = 0;
+            System.out.println("Erreur retour au menu principal ! ");
+            Thread.sleep(2000);
+            processing();
         }
+    }
 
 
-    public static int getResponseMenu(List<String> tab) throws InterruptedException {
+    public static int getResponseMenu(List<String> tab, String questionPhrase) throws InterruptedException {
         List<String> tabQuestion = new ArrayList<>(tab);
         tabQuestion.add("Retour");
         tabQuestion.add("Retour au menu");
@@ -245,13 +318,16 @@ public class App {
 
         while(response == 0){
             int cmpt = 1;
+            if(tab.size()>0){
+                System.out.println();
+            }
             for(String question : tabQuestion) {
                 if(cmpt == tabQuestion.size()-2){
                     System.out.println();
                 }
                 System.out.println(cmpt++ + ". " + question);
             }
-            System.out.println("Faites votre choix : ");
+            System.out.println("\n" +questionPhrase + " : ");
             try {
                 response = scanner.nextInt();
                 if (response < 1){
@@ -281,23 +357,54 @@ public class App {
         for(Client client : clientService.recupererClients()){
             tabClient.add(client.getNom() + " " + client.getPrenom());
         }
-        Long index = (long) getResponseMenu(tabClient);
-        return clientService.recupererClient(index).getId();
+        Long index = (long) getResponseMenu(tabClient, "Choisir l'utilisateur");
+        if(index >= 0){
+            return clientService.recupererClient(index).getId();
+        }else{
+            return -1L;
+        }
     }
     public static Long menuGetIdTaux() throws InterruptedException {
         List<String> tabTaux = new ArrayList<>();
         for(Taux tau : tauxService.recupererTauxs()){
             tabTaux.add(tau.getValeur()*100 + "% sur " + tau.getDuree().getDureeEnMois() + " pour " + tau.getMotif().getDescription());
         }
-        Long index = (long) getResponseMenu(tabTaux);
-        return tauxService.recupererTaux(index).getId();
+        Long index = (long) getResponseMenu(tabTaux, "choisir le Taux");
+        if(index >= 0){
+            return tauxService.recupererTaux(index).getId();
+        }
+        return -1L;
+    }
+    public static Long menuGetIdDuree() throws InterruptedException {
+        List<String> tabDuree = new ArrayList<>();
+
+        for(Duree duree : dureeService.recupererDurees()){
+            tabDuree.add(duree.getDureeEnMois() + " en mois ");
+        }
+        int index = getResponseMenu(tabDuree, "Choisir la durée") - 1;
+        if(index > 0){
+            return dureeService.recupererDurees().get(index).getId();
+        }
+        return -1L;
+    }
+    public static Long menuGetMotif() throws InterruptedException {
+        List<String> tabMotif = new ArrayList<>();
+
+        for(Motif motif : motifService.recupererMotifs()){
+            tabMotif.add("Nom : " + motif.getNom() + " description : " + motif.getDescription());
+        }
+        int index = getResponseMenu(tabMotif, "Choisir le motif") - 1;
+        if(index > 0){
+            return motifService.recupererMotifs().get(index).getId();
+        }
+        return null;
     }
     public static int getResponseInt(String question){
         scanner = new Scanner(System.in);
         int response = 0;
 
         while(response == 0){
-            System.out.println("Entrer R : Retour, RM : Retour Menu, Q : Quitter");
+            System.out.println("R: Retour | RM: Retour Menu | Q: Quitter");
             System.out.println(question + " :");
             try {
                 response = scanner.nextInt();
@@ -319,12 +426,12 @@ public class App {
         }
         return response;
     }
-    public static LocalDateTime getDateEffet(){
+    public static LocalDateTime getDate(){
         LocalDateTime date = null;
         boolean valid = false;
         while (!valid) {
             try {
-                String dateString = getResponseString("Veuillez saisir la date d'effet au format MM/yyyy");
+                String dateString = getResponseString("Veuillez saisir la date au format MM/yyyy");
                 if (dateString == null){
                     return null;
                 }else {
