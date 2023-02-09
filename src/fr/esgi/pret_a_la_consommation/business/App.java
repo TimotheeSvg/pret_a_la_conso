@@ -20,6 +20,7 @@ public class App {
     private static int sortingChoice = 0;
     private static int creatingChoice = 0;
     private static int informationChoice = 0;
+    private static Long idPret;
 
     private static Long idUser;
     private static Long idTaux;
@@ -156,8 +157,17 @@ public class App {
                         break;
 
                     case 2:
-                        System.out.println(clientService.recupererClient(idUser));
-                        getResponseString("Choisir quoi faire : ");
+                        Client client = clientService.recupererClient(idUser);
+                        List<Pret> prets = client.getPrets();
+                        List<String>question = new ArrayList<>();
+                        System.out.println("Information Client : " + client.getNom() + " " + client.getPrenom());
+                        for(Pret pret: prets){
+                            question.add(pret.toString());
+                        }
+                        idPret = (long) getResponseMenu(question, "Choisir un prêt à consulter: ");
+                        if( idPret>= 0){
+                            step+=1;
+                        }
                         processing();
                         break;
 
@@ -273,7 +283,16 @@ public class App {
                         }
                         processing();
                         break;
-
+                    case 2:
+                        Pret pretMens = pretService.recupererPret(idPret);
+                        List<Mensualite> mensualites = pretMens.getMensualites();
+                        System.out.println(pretMens);
+                        for(Mensualite mensualite: mensualites){
+                            System.out.println("\t" + mensualite);
+                        }
+                        getResponseMenu(Arrays.asList(),"Faites votre choix");
+                        processing();
+                        break;
                     case 3:
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                         for(Pret pret: sortingListPret){
@@ -462,7 +481,7 @@ public class App {
     }
     public static String getResponseString(String question){
         scanner = new Scanner(System.in);
-        System.out.println("Entrer R : Retour, RM : Retour Menu, Q : Quitter");
+        System.out.println("R: Retour | RM: Retour Menu | Q: Quitter");
         System.out.println(question + " :");
         String response = scanner.nextLine();
         switch (response){
