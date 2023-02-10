@@ -3,6 +3,11 @@ package fr.esgi.pret_a_la_consommation.business;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ La classe Motif représente un motif de prêt à la consommation.
+ */
+
+
 public class Motif {
     private final Long id;
     private String nom;

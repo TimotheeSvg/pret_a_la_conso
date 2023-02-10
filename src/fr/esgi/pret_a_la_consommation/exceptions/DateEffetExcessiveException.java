@@ -1,7 +1,10 @@
 package fr.esgi.pret_a_la_consommation.exceptions;
 
-import java.time.LocalDateTime;
+/**
 
+ Classe représentant une exception pour une date d'effet excessive.
+ Cette exception est levée lorsqu'une date d'effet demandée dépasse 3 ans.
+ */
 public class DateEffetExcessiveException extends Exception{
 
     public DateEffetExcessiveException(){

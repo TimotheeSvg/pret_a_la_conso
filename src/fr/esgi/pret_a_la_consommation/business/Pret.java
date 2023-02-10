@@ -6,6 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ La classe Pret permet de définir un objet Pret, qui contiendra les informations sur le prêt
+ accordé à un client.
+ */
+
 public class Pret {
 
     private final Long id;

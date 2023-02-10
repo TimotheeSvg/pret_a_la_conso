@@ -2,6 +2,13 @@ package fr.esgi.pret_a_la_consommation.business;
 
 import java.time.LocalDate;
 
+/**
+
+ La classe Mensualite représente une mensualité associée à un prêt.
+ Cette classe stocke des informations telles que l'identifiant de la mensualité, la date de prélèvement,
+ la partie des intérêts remboursés et la partie du capital remboursé.
+ */
+
 public class Mensualite {
 
     private final Long id;

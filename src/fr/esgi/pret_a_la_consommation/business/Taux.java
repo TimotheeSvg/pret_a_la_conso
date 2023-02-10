@@ -3,6 +3,12 @@ package fr.esgi.pret_a_la_consommation.business;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+
+ La classe Taux représente un taux pour un prêt.
+ Chaque taux est identifié par un ID unique, a une valeur, une durée, un motif et une liste de prêts.
+ */
+
 public class Taux {
 
     private final Long id;

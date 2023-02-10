@@ -2,7 +2,11 @@ package fr.esgi.pret_a_la_consommation.business;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
 
+ Classe qui représente la durée d'un prêt à la consommation.
+ Elle possède un identifiant unique, une durée en mois, un compteur statique pour l'identifiant et une liste de taux associés.
+ */
 public class Duree {
     private final Long id;
     private int dureeEnMois;

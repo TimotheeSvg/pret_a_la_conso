@@ -1,5 +1,9 @@
 package fr.esgi.pret_a_la_consommation.exceptions;
 
+/**
+ Classe représentant une exception pour un montant excessif
+ */
+
 public class MontantExcessifException extends Exception{
 
     public MontantExcessifException(double montant){

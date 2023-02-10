@@ -2,6 +2,15 @@ package fr.esgi.pret_a_la_consommation.business;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+
+ Classe représentant un client.
+
+ Un client est caractérisé par son identifiant unique, son nom et son prénom.
+
+ Il peut également avoir une liste de prêts.
+ */
+
 public class Client {
 
     private final Long id;
