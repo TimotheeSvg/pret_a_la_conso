@@ -1,0 +1,7 @@
+unnamed package
+fr.esgi.pret_a_la_consommation
+fr.esgi.pret_a_la_consommation.business
+fr.esgi.pret_a_la_consommation.exceptions
+fr.esgi.pret_a_la_consommation.service
+fr.esgi.pret_a_la_consommation.service.impl
+fr.esgi.pret_a_la_consommation.util
