@@ -34,23 +34,30 @@ public class App
     private static int        montant;
 
     public static void main(String[] args) throws InterruptedException, MontantExcessifException, DateEffetExcessiveException {
+        initilisation();
+        initialisationAvecPret();
+        processing();
+    }
 
+    public static void initilisation(){
         dureeService.ajouterDuree(12);
         dureeService.ajouterDuree(24);
 
-        motifService.ajouterMotif("Auto", "Auto");
-        motifService.ajouterMotif("Moto", "Moto");
+        motifService.ajouterMotif("Auto", "Pret pour une auto");
+        motifService.ajouterMotif("Moto", "Pret pour une Moto");
 
         tauxService.ajouterTaux(dureeService.recupererDuree(1L), motifService.recupererMotif(1L), 0.01);
         tauxService.ajouterTaux(dureeService.recupererDuree(1L), motifService.recupererMotif(2L), 0.015);
         tauxService.ajouterTaux(dureeService.recupererDuree(2L), motifService.recupererMotif(1L), 0.02);
         tauxService.ajouterTaux(dureeService.recupererDuree(2L), motifService.recupererMotif(2L), 0.025);
 
-        clientService.ajouterClient("Sauvage", "Timothee");
-        clientService.ajouterClient("Robert", "Deniblo");
-        clientService.ajouterClient("John", "Pas");
-        clientService.ajouterClient("Josephine", "Ange");
-
+        clientService.ajouterClient("Alain", "Chahaut");
+        clientService.ajouterClient("Robert", "Desbiblo");
+        clientService.ajouterClient("Jean", "Duparc");
+        clientService.ajouterClient("Omar", "Non");
+        clientService.ajouterClient("Daniel", "fauteuil");
+    }
+    public static void initialisationAvecPret(){
         LocalDateTime j1 = LocalDateTime.of(2023, 7, 3, 0, 0);
         LocalDateTime j2 = LocalDateTime.of(2024, 5, 1, 0, 0);
         LocalDateTime j3 = LocalDateTime.of(2025, 8, 8, 0, 0);
@@ -75,8 +82,6 @@ public class App
         pretService.ajouterPret(535,  j2, tauxService.recupererTaux(2L), clientService.recupererClient(4L));
         pretService.ajouterPret(5342, j3, tauxService.recupererTaux(1L), clientService.recupererClient(4L));
         pretService.ajouterPret(7754, j1, tauxService.recupererTaux(2L), clientService.recupererClient(4L));
-
-        processing();
     }
 
     /**
@@ -256,15 +261,16 @@ public class App
 
                                 System.out.println("Veuillez saisir la première date");
                                 LocalDateTime dateStart = getDate();
+                                if(dateStart != null){
+                                    System.out.println("Veuillez saisir la dernière date");
+                                    LocalDateTime dateEnd = getDate();
+                                    if(dateEnd != null){
+                                        sortingListPret = pretService.trierPretEntreDeuxDates(dateStart, dateEnd);
+                                        step = 3;
 
-                                System.out.println("Veuillez saisir la dernière date");
-                                LocalDateTime dateEnd = getDate();
-
-                                sortingListPret = pretService.trierPretEntreDeuxDates(dateStart, dateEnd);
-                                step = 3;
-
+                                    }
+                                }
                                 processing();
-
                                 break;
 
                             case 6:
@@ -469,7 +475,7 @@ public class App
     /**
      Affiche un menu à partir d'une liste de chaînes de caractères et retourne la réponse de l'utilisateur.
      @param tab La liste de chaînes de caractères à afficher dans le menu.
-     @param questionPhrase La phrase à afficher pour la question.
+     @param questionPhrase La phrase a affiché pour la question.
      @return La réponse de l'utilisateur sous forme d'entier.
      */
 
@@ -687,7 +693,7 @@ public class App
 
         while (!valid)
         {
-            String dateString = getResponseString("Veuillez saisir la date au format JJ/MM/yyyy");
+            String dateString = getResponseString("Veuillez saisir la date au format JJ/MM/yyyy (3 ans maximum à partir de aujourd'hui)");
 
             if (dateString == null)
             {
@@ -717,6 +723,9 @@ public class App
                         }
                     }
                     catch (Exception ignored) {}
+                }
+                else{
+                    return null;
                 }
             }
         }
