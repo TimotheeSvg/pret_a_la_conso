@@ -79,7 +79,14 @@ public class App
         processing();
     }
 
+    /**
 
+     La méthode processing() est utilisée pour gérer le menu principal et les différents cas de scénario de l'application de prêt à la consommation.
+     Elle utilise des switch cases pour naviguer entre les différents sous-menus et les différentes étapes de l'application.
+     @throws InterruptedException est levée si une interruption s'est produite dans le traitement de la demande de prêt.
+     @throws MontantExcessifException est levée si le montant demandé dépasse 20000.
+     @throws DateEffetExcessiveException est levée si la date d'effet du prêt est supérieure à la date actuelle.
+     */
     public static void processing() throws InterruptedException, MontantExcessifException, DateEffetExcessiveException {
         switch (step)
         {
@@ -459,6 +466,13 @@ public class App
     }
 
 
+    /**
+     Affiche un menu à partir d'une liste de chaînes de caractères et retourne la réponse de l'utilisateur.
+     @param tab La liste de chaînes de caractères à afficher dans le menu.
+     @param questionPhrase La phrase à afficher pour la question.
+     @return La réponse de l'utilisateur sous forme d'entier.
+     */
+
     public static int getResponseMenu(List<String> tab, String questionPhrase) throws InterruptedException
     {
         List<String> tabQuestion = new ArrayList<>(tab);
@@ -525,6 +539,10 @@ public class App
         return response;
     }
 
+    /**
+     Affiche un menu pour sélectionner un utilisateur et retourne son ID.
+     @return L'ID de l'utilisateur sélectionné.
+     */
     public static Long menuGetIdUser() throws InterruptedException
     {
         List<String> tabClient = new ArrayList<>();
@@ -546,6 +564,11 @@ public class App
         }
     }
 
+
+    /**
+     Affiche un menu pour sélectionner un taux et retourne son ID.
+     @return L'ID du taux sélectionné.
+     */
     public static Long menuGetIdTaux() throws InterruptedException
     {
         List<String> tabTaux = new ArrayList<>();
@@ -565,6 +588,11 @@ public class App
         return -1L;
     }
 
+
+    /**
+     Affiche un menu pour sélectionner une durée et retourne son ID.
+     @return L'ID de la durée sélectionnée.
+     */
     public static Long menuGetIdDuree() throws InterruptedException
     {
         List<String> tabDuree = new ArrayList<>();
@@ -584,6 +612,10 @@ public class App
         return -1L;
     }
 
+    /**
+     Affiche un menu pour sélectionner un motif et retourne son ID.
+     @return L'ID du motif sélectionné.
+     */
     public static Long menuGetMotif() throws InterruptedException
     {
         List<String> tabMotif = new ArrayList<>();
@@ -603,6 +635,11 @@ public class App
         return null;
     }
 
+    /**
+     Affiche une question et retourne la réponse de l'utilisateur sous forme d'entier.
+     @param question La question à afficher.
+     @return La réponse de l'utilisateur sous forme d'entier.
+     */
     public static int getResponseInt(String question)
     {
         scanner = new Scanner(System.in);
@@ -639,6 +676,10 @@ public class App
         return response;
     }
 
+    /**
+     La méthode getDate permet de demander à l'utilisateur de saisir une date au format JJ/MM/yyyy. Si la date saisie est inférieure à la date actuelle, un message d'erreur sera affiché. Sinon, la date sera retournée sous forme de LocalDateTime.
+     @return La date saisie par l'utilisateur sous forme de LocalDateTime
+     */
     public static LocalDateTime getDate()
     {
         LocalDateTime date  = null;
@@ -683,6 +724,11 @@ public class App
         return date;
     }
 
+    /**
+     La méthode getResponseString permet de poser une question à l'utilisateur et de renvoyer sa réponse. Si l'utilisateur entre "R", il retournera au menu précédent. Si l'utilisateur entre "RM", il retournera au menu principal. Si l'utilisateur entre "Q", le programme se terminera.
+     @param question La question à poser à l'utilisateur
+     @return La réponse de l'utilisateur sous forme de chaîne de caractères
+     */
     public static String getResponseString(String question)
     {
         scanner = new Scanner(System.in);
